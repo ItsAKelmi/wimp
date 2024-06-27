@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name        My Script
-// @namespace   Violentmonkey Scripts
+// @name        Wolfery Improved
+// @namespace   WolferyImproved
 // @description This is a userscript.
-// @match       *://*/*
+// @match       https://wolfery.com/*
 // @grant       GM_addStyle
-// @version     0.0.0
+// @version     0.1.0
 // @author      process.env.AUTHOR
 // @require     https://cdn.jsdelivr.net/npm/@violentmonkey/dom@2
 // @require     https://cdn.jsdelivr.net/npm/@violentmonkey/ui@0.7
