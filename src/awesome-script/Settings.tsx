@@ -43,7 +43,7 @@ GM_addValueChangeListener(
 export function Settings() {
   return (
     <div class={styles.settings}>
-      <div>This is the settings page for WIMP.</div>
+      <h3 class="margin-bottom-m">Anti-MAV</h3>
       <label class={styles.checkbox}>
         <input
           type="checkbox"

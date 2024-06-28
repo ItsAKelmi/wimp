@@ -21,7 +21,7 @@ interface WolferyApp {
       sortOrder: number;
       tabFactory: function;
       factory: function;
-      title: string;
+      title?: string;
     }) => this;
   };
 }

@@ -1,9 +1,9 @@
 .console-controlledchar .btn {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .console-controlledchar.active,
 .console-controlledchar:focus-within,
 .console-controlledchar:hover {
-    filter: none !important;
+  filter: none !important;
 }

@@ -75,15 +75,14 @@ function applyMods() {
 
   unsafeWindow?.app?.getModule('playerTabs').addTab({
     id: 'wimp',
-    title: 'WIMP Settings',
     sortOrder: 9999,
     tabFactory: (click) => ({
       render: (div) => render(() => SettingsButton(click), div),
       unrender: () => void 0,
     }),
     factory: () => ({
+      title: 'WIMP Settings',
       component: {
-        title: 'WIMP Settings',
         render: (div) => render(Settings, div),
         unrender: () => void 0,
       },
