@@ -30,7 +30,7 @@
   margin-bottom: 8px;
 
   /* Based on https://moderncss.dev/pure-css-custom-checkbox-style/ */
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     /* Add if not using autoprefixer */
     /* -webkit-appearance: none; */
     /* Remove most all native input styles */
@@ -39,7 +39,7 @@
     background-color: #303753;
     /* Not removed via appearance */
     margin: 0;
-  
+
     font: inherit;
     color: currentColor;
     width: 1.15em;
@@ -47,13 +47,13 @@
     border: 0.15em solid currentColor;
     border-radius: 0.15em;
     transform: translateY(0.075em);
-  
+
     display: grid;
     place-content: center;
   }
-  
-  input[type="checkbox"]::before {
-    content: "";
+
+  input[type='checkbox']::before {
+    content: '';
     width: 0.65em;
     height: 0.65em;
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
@@ -64,17 +64,17 @@
     /* Windows High Contrast Mode */
     background-color: CanvasText;
   }
-  
-  input[type="checkbox"]:checked::before {
+
+  input[type='checkbox']:checked::before {
     transform: scale(1);
   }
-  
+
   /* input[type="checkbox"]:focus {
     outline: max(2px, 0.15em) solid currentColor;
     outline-offset: max(2px, 0.15em);
   } */
-  
-  input[type="checkbox"]:disabled {  
+
+  input[type='checkbox']:disabled {
     color: rgb(147, 150, 159);
     box-shadow: inset 1em 1em rgb(147, 150, 159);
     cursor: not-allowed;
