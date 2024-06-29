@@ -113,6 +113,7 @@ function BaseEvent(
             class="common--formattext"
             innerHTML={formatText(msg, mod)}
           ></span>
+          {pose ? '' : '"'}
         </span>
       </div>
     </div>

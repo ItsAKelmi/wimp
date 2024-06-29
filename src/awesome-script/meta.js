@@ -5,7 +5,7 @@
 // @match       https://wolfery.com/*
 // @downloadURL https://github.com/ItsAKelmi/wimp/releases/download/latest/wolfery-improved.user.js
 // @homepageURL https://github.com/ItsAKelmi/wimp/
-// @version     1.0.0
+// @version     1.0.1
 // @author      process.env.AUTHOR
 // @require     https://cdn.jsdelivr.net/npm/@violentmonkey/dom@2
 // @require     https://cdn.jsdelivr.net/npm/@violentmonkey/dom@2/dist/solid.min.js
