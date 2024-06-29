@@ -1,93 +1,83 @@
 import './meta.js?userscript-metadata';
-import './app';
 import { observe } from '@violentmonkey/dom';
-import { render } from 'solid-js/web';
 import { Settings, SettingsButton } from './Settings';
-import { stylesheet } from './style.module.css';
-import { default as cssDimCommon } from './css-tweaks/dim-common.css';
-import { default as cssDimInactive } from './css-tweaks/dim-inactive.css';
-import { default as cssDimWhileTyping } from './css-tweaks/dim-while-typing.css';
+import { SETTINGS } from './common';
+import { fixMutes } from './fixMutes';
+import { j2m } from './common';
+import { applyWhisperMessageReplacements } from './whisperMessageReplacements';
+import { rebuildStyles } from './rebuildStyles';
 
 const expectedVersion = '1.58.1';
 let version = undefined;
 unsafeWindow.WIMPPatches = '';
-const style = document.createElement('style');
 
-function fixMutes() {
-  unsafeWindow.app.getModule('mute').isMutedChar = function (charId: string) {
-    const player = this.module.player.getPlayer();
-    const playerId = player.id;
-    return !!(
-      charId &&
-      (player?.mutedChars.props[charId] ||
-        player?.mutedChars.props[playerId + charId])
-    );
-  };
-  unsafeWindow.WIMPPatches += 'mute.isMutedChar;';
-}
+GM_addValueChangeListener(SETTINGS.DIM_INACTIVE, () => rebuildStyles());
+GM_addValueChangeListener(SETTINGS.DIM_TYPING, () => rebuildStyles());
+GM_addValueChangeListener(SETTINGS.FOCUS_MESSAGE_DOT, () => {
+  rebuildStyles();
+  applyMods();
+});
+GM_addValueChangeListener(SETTINGS.FOCUS_MESSAGE_UNDERLINE, () => {
+  rebuildStyles();
+  applyMods();
+});
 
-GM_addValueChangeListener('dimInactiveControlled', () => rebuildStyles());
-GM_addValueChangeListener('dimInactiveWhileTyping', () => rebuildStyles());
-
-function rebuildStyles() {
-  const dimInactiveControlled = GM_getValue('dimInactiveControlled', false),
-    dimInactiveWhileTyping = GM_getValue('dimInactiveWhileTyping', false);
-  let stylesText = stylesheet;
-  if (dimInactiveControlled) {
-    stylesText += cssDimInactive;
-  }
-  if (dimInactiveWhileTyping) {
-    stylesText += cssDimWhileTyping;
-  }
-  if (dimInactiveControlled || dimInactiveWhileTyping) {
-    stylesText += cssDimCommon;
-  }
-  style.textContent = stylesText;
-}
-
+let undoMods = [];
 function applyMods() {
+  for (const f of undoMods) f();
+  undoMods = [];
+
+  const charLog = unsafeWindow?.app?.getModule('charLog');
+  const charFocus = unsafeWindow?.app?.getModule('charFocus');
+  if (!charLog || !charFocus) {
+    unsafeWindow?.app
+      ?.getModule('toaster')
+      .openError(`WIMP: expected app modules not initialized`);
+    return;
+  }
+
+  const focusMessageDot = GM_getValue(SETTINGS.FOCUS_MESSAGE_DOT, false),
+    focusMessageUnderline = GM_getValue(
+      SETTINGS.FOCUS_MESSAGE_UNDERLINE,
+      false,
+    );
+  if (focusMessageDot || focusMessageUnderline) {
+    undoMods.push(applyWhisperMessageReplacements(charFocus, charLog));
+  }
+}
+
+function initializeWimp() {
   unsafeWindow?.app?.getModule('toaster').open({
     content: 'Wolfery Improved: Applying mods...',
     autoclose: 2000,
     closeOn: 'click',
   });
 
-  console.info('Applying WIMP mods...');
+  console.info('WIMP', 'Applying WIMP mods...');
   // Insert styles
   observe(document.body, () => {
     const node = document.querySelector('.console-controlledchar');
     if (node) {
       rebuildStyles();
-      document.head.appendChild(style);
-      console.info('...applied WIMP style element.');
+      console.info('WIMP', '...applied WIMP style element.');
       return true;
     }
   });
 
   // Apply mutefix
-  const foo = setInterval(() => {
-    if (unsafeWindow?.app?.getModule('mute')) {
-      fixMutes();
-      console.info('...patched mutes for version 1.58.1');
-      clearInterval(foo);
-    }
-  }, 100);
+  fixMutes();
+  console.info('WIMP', '...patched mutes for version 1.58.1');
 
   unsafeWindow?.app?.getModule('playerTabs').addTab({
     id: 'wimp',
     sortOrder: 9999,
-    tabFactory: (click) => ({
-      render: (div) => render(() => SettingsButton(click), div),
-      unrender: () => void 0,
-    }),
+    tabFactory: (click) => j2m(() => SettingsButton(click)),
     factory: () => ({
       title: 'WIMP Settings',
-      component: {
-        render: (div) => render(Settings, div),
-        unrender: () => void 0,
-      },
+      component: j2m(Settings),
     }),
   });
+  console.info('WIMP', '...injected settings tab');
 
   if (expectedVersion !== version) {
     unsafeWindow?.app
@@ -96,6 +86,8 @@ function applyMods() {
         `WIMP: version mismatch, expected ${expectedVersion} got ${version}`,
       );
   }
+
+  applyMods();
 }
 
 const foo = setInterval(() => {
@@ -103,14 +95,22 @@ const foo = setInterval(() => {
   const maybeCharLog = unsafeWindow?.app?.getModule('charLog');
   const maybePlayer = unsafeWindow?.app?.getModule('player');
   const maybeToaster = unsafeWindow?.app?.getModule('toaster');
+  const maybeCharFocus = unsafeWindow?.app?.getModule('charFocus');
+  const maybeMute = unsafeWindow?.app?.getModule('mute');
   const maybeVersion = unsafeWindow?.app
     ?.getModule('info')
     ?.getClient()?.version;
-  if (maybeCharLog && maybePlayer && maybeVersion && maybeToaster) {
-    // charLog = maybeCharLog;
+  if (
+    maybeCharLog &&
+    maybePlayer &&
+    maybeVersion &&
+    maybeToaster &&
+    maybeCharFocus &&
+    maybeMute
+  ) {
     // player = maybePlayer;
     version = maybeVersion;
-    applyMods();
+    initializeWimp();
     clearInterval(foo);
   }
 }, 100);

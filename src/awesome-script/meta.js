@@ -3,11 +3,9 @@
 // @namespace   WolferyImproved
 // @description This is a userscript.
 // @match       https://wolfery.com/*
-// @grant       GM_addStyle
-// @version     process.env.VERSION
+// @version     0.3.0
 // @author      process.env.AUTHOR
 // @require     https://cdn.jsdelivr.net/npm/@violentmonkey/dom@2
-// @require     https://cdn.jsdelivr.net/npm/@violentmonkey/ui@0.7
 // @require     https://cdn.jsdelivr.net/npm/@violentmonkey/dom@2/dist/solid.min.js
 // ==/UserScript==
 

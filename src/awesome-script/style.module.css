@@ -85,3 +85,20 @@
     margin-left: 4px;
   }
 }
+
+.focus--label {
+  display: inline-block;
+  border-bottom: var(--wimp-focus-color) solid
+    var(--wimp-focus-underline-thickness, 0px);
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background-color: var(--wimp-focus-color);
+    display: var(--wimp-focus-dot-display, none);
+    margin-right: 2px;
+    margin-bottom: 1px;
+    margin-left: 1px;
+  }
+}

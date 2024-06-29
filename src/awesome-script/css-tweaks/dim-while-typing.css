@@ -2,4 +2,5 @@
   > :not(:focus-within)
   .console-controlledchar:not(.active) {
   filter: saturate(0.5) opacity(10%);
+  transition: filter 0.2s;
 }
