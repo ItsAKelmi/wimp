@@ -13,8 +13,6 @@ export function hookCommandStyle() {
 }
 
 function hookEditorState(prev, next /*namespace, _*/) {
-  console.log(next);
-
   if (!next.state) return;
   next.state.on('change', updatePrivateStyle);
 }
@@ -61,7 +59,6 @@ const punctuationRE = /^.+[."~?!]$/s;
 const enterHandler = {
   run(consoleState: ConsoleState) {
     const val = consoleState.doc;
-    console.log(consoleState, 'Enter', val);
 
     // False will allow the lower-stacked handlers to run
     if (prev === val) return false;
@@ -94,7 +91,6 @@ function checkRules(consoleState: ConsoleState) {
   const shouldCheckMsg =
     GM_getValue(SETTINGS.REQUIRE_PUNCTUATION_END_MSG) &&
     privateCommands.includes(first);
-  console.log('antimav', shouldCheckMav, shouldCheckMsg, first);
   if ((shouldCheckMav || shouldCheckMsg) && !punctuationRE.test(val)) {
     // Not a well formed command.
     return false;
