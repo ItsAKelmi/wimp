@@ -11,6 +11,28 @@
 
 .settings {
   padding: 16px;
+
+  h3:not(:first-child) {
+    margin-top: 12px;
+  }
+
+  h3 {
+    margin-bottom: 8px;
+  }
+
+  fieldset {
+    margin-top: 8px;
+    margin-bottom: 16px;
+
+    legend {
+      margin-bottom: 4px;
+    }
+  }
+
+  span[title] {
+    text-decoration: dotted underline 2px;
+    font-style: italic;
+  }
 }
 
 .settingsBtn {
@@ -27,7 +49,17 @@
 
 .checkbox {
   display: flex;
-  margin-bottom: 8px;
+  margin-bottom: 2px;
+  padding: 4px;
+  border-radius: 4px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    background-color: #303753;
+  }
 
   /* Based on https://moderncss.dev/pure-css-custom-checkbox-style/ */
   input[type='checkbox'] {

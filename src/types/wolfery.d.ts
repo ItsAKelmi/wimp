@@ -13,32 +13,112 @@ interface WolferyApp {
   getModule(mod: 'toaster'): {
     open: (opt: {
       title?: string;
-      content: string;
+      content: string | ModappElement | ((close: () => void) => ModappElement);
       autoclose?: number;
+      type?: 'success' | 'info' | 'warn'; // Warn is undocumented
       closeOn: 'click' | 'button' | 'none';
     }) => function;
     openError: (msg: string) => function;
   };
   getModule(mod: 'playerTabs'): {
+    removeTab: (string) => void;
     addTab: (tab: {
       id: string;
       sortOrder: number;
-      tabFactory: function;
-      factory: function;
+      tabFactory: (click: () => void) => ModappElement;
+      factory: () => { title: string; component: ModappElement };
       title?: string;
     }) => this;
   };
   getModule(mod: 'charLog'): CharLog;
   getModule(mod: 'charFocus'): CharFocus;
+  getModule(mod: 'player'): {
+    getActiveChar(): CharModel;
+  };
+  getModule(mod: 'console'): {
+    addKeymap(
+      key: string,
+      binding: { run: (consoleState: ConsoleState) => boolean },
+    ): void;
+    keymapModel: {
+      [key: string]: { run: (consoleState: ConsoleState) => boolean };
+    };
+    model: {
+      state: null | ConsoleState;
+      on(
+        eventName: 'change',
+        handler: (
+          p: Partial<ConsoleState>, //????
+          n: ConsoleState,
+          namespace?: string,
+        ) => void,
+      ): void;
+      off(
+        eventName: 'change',
+        handler: (
+          p: Partial<ConsoleState>, //????
+          n: ConsoleState,
+          namespace?: string,
+        ) => void,
+      ): void;
+    };
+  };
+}
+
+interface ModappElement {
+  render: (div: HTMLElement) => void;
+  unrender: () => void;
+}
+
+interface CharModel {
+  id: string;
+  name: string;
+}
+
+export interface ConsoleState {
+  doc: string;
+  getCtrlId(): string;
+  on(
+    type: 'change',
+    handler: (
+      p: Partial<ConsoleState>, //????
+      n: ConsoleState,
+      namespace?: string,
+    ) => void,
+  ): void;
+  off(
+    type: 'change',
+    handler: (
+      p: Partial<ConsoleState>, //????
+      n: ConsoleState,
+      namespace?: string,
+    ) => void,
+  ): void;
 }
 
 export interface CharLog {
-  getEventComponentFactory(type: string): function;
+  getEventComponentFactory(type: string): unknown;
   addEventComponentFactory(
     type: string,
-    factory: (charId: string, ev: unknown) => unknown,
+    factory: unknown | ((charId: string, ev: unknown) => unknown),
   ): this;
   removeEventComponentFactory(type: string): this;
+  logInfo(
+    char: CharModel,
+    msg: string | LocaleString,
+    opt?: {
+      time?: Date;
+      noMenu?: boolean;
+    },
+  ): void;
+  logError(
+    char: CharModel,
+    err: object,
+    opt?: {
+      time?: Date;
+      noMenu?: boolean;
+    },
+  ): void;
 }
 
 export interface CharFocus {

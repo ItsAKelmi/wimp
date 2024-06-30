@@ -6,6 +6,8 @@ import { fixMutes } from './fixMutes';
 import { j2m } from './common';
 import { applyWhisperMessageReplacements } from './whisperMessageReplacements';
 import { rebuildStyles } from './rebuildStyles';
+import { hijackEnter, hookCommandStyle } from './antiMav';
+import { VersionMismatchToast } from './versionMismatch';
 
 const expectedVersion = '1.58.1';
 let version = undefined;
@@ -20,6 +22,25 @@ GM_addValueChangeListener(SETTINGS.FOCUS_MESSAGE_DOT, () => {
 GM_addValueChangeListener(SETTINGS.FOCUS_MESSAGE_UNDERLINE, () => {
   rebuildStyles();
   applyMods();
+});
+GM_addValueChangeListener(
+  SETTINGS.REQUIRE_PUNCTUATION_END,
+  (a, b, newValue) => {
+    applyMods();
+    if (newValue) unsafeWindow.location.reload();
+  },
+);
+GM_addValueChangeListener(
+  SETTINGS.REQUIRE_PUNCTUATION_END_MSG,
+  (a, b, newValue) => {
+    applyMods();
+    if (newValue) unsafeWindow.location.reload();
+  },
+);
+GM_addValueChangeListener(SETTINGS.HILIGHT_MESSAGE_TYPE, (a, b, newValue) => {
+  rebuildStyles();
+  applyMods();
+  if (newValue) unsafeWindow.location.reload();
 });
 
 let undoMods = [];
@@ -44,9 +65,50 @@ function applyMods() {
   if (focusMessageDot || focusMessageUnderline) {
     undoMods.push(applyWhisperMessageReplacements(charFocus, charLog));
   }
+
+  const requirePunctuationEnd =
+    GM_getValue(SETTINGS.REQUIRE_PUNCTUATION_END, false) ||
+    GM_getValue(SETTINGS.REQUIRE_PUNCTUATION_END_MSG, false);
+  if (requirePunctuationEnd) {
+    undoMods.push(hijackEnter());
+  }
+
+  undoMods.push(hookCommandStyle());
 }
 
+function compareMinorVersion(a, b) {
+  a = a.split('.');
+  b = b.split('.');
+  return a.length > 1 && b.length > 1 && a[0] === b[0] && a[1] === b[1];
+}
 function initializeWimp() {
+  const expectedVersionOverride = GM_getValue(
+    SETTINGS.EXPECTED_VERSION_OVERRIDE,
+    false,
+  );
+  if (expectedVersion !== version && expectedVersionOverride !== version) {
+    unsafeWindow?.app?.getModule('toaster').open({
+      title: 'WIMP Version Mismatch',
+      closeOn: 'button',
+      type: compareMinorVersion(version, expectedVersion) ? 'info' : 'warn',
+      content: (click) =>
+        j2m(() =>
+          VersionMismatchToast({
+            click,
+            expectedVersion,
+            gotVersion: version,
+            onLoadAnyway: () => {
+              GM_setValue(SETTINGS.EXPECTED_VERSION_OVERRIDE, version);
+              window.location.reload();
+              initializeWimp();
+              click();
+            },
+          }),
+        ),
+    });
+    return;
+  }
+
   unsafeWindow?.app?.getModule('toaster').open({
     content: 'Wolfery Improved: Applying mods...',
     autoclose: 2000,
@@ -68,7 +130,9 @@ function initializeWimp() {
   fixMutes();
   console.info('WIMP', '...patched mutes for version 1.58.1');
 
-  unsafeWindow?.app?.getModule('playerTabs').addTab({
+  const playerTabs = unsafeWindow?.app?.getModule('playerTabs');
+  playerTabs.removeTab('wimp');
+  playerTabs.addTab({
     id: 'wimp',
     sortOrder: 9999,
     tabFactory: (click) => j2m(() => SettingsButton(click)),
@@ -78,14 +142,6 @@ function initializeWimp() {
     }),
   });
   console.info('WIMP', '...injected settings tab');
-
-  if (expectedVersion !== version) {
-    unsafeWindow?.app
-      ?.getModule('toaster')
-      .openError(
-        `WIMP: version mismatch, expected ${expectedVersion} got ${version}`,
-      );
-  }
 
   applyMods();
 }
@@ -97,6 +153,7 @@ const foo = setInterval(() => {
   const maybeToaster = unsafeWindow?.app?.getModule('toaster');
   const maybeCharFocus = unsafeWindow?.app?.getModule('charFocus');
   const maybeMute = unsafeWindow?.app?.getModule('mute');
+  const maybeConsole = unsafeWindow?.app?.getModule('console');
   const maybeVersion = unsafeWindow?.app
     ?.getModule('info')
     ?.getClient()?.version;
@@ -106,7 +163,8 @@ const foo = setInterval(() => {
     maybeVersion &&
     maybeToaster &&
     maybeCharFocus &&
-    maybeMute
+    maybeMute &&
+    maybeConsole
   ) {
     // player = maybePlayer;
     version = maybeVersion;

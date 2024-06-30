@@ -1,0 +1,44 @@
+.wimp-private {
+  @keyframes appear {
+    from {
+      color: transparent;
+    }
+
+    to {
+    }
+  }
+  .console--container {
+    border-color: #93969f;
+    border: 2px solid #93969f;
+    position: relative;
+  }
+  .console {
+    position: relative;
+  }
+  .console::before {
+    overflow: clip;
+    display: block;
+    font-size: 12px;
+    height: 16px;
+    left: 50px;
+    position: absolute;
+    top: -8px;
+    z-index: 1;
+    background: linear-gradient(to bottom, #161926 50%, #1d2233 50%);
+    padding: 0 4px;
+    animation: 0.2s linear appear;
+  }
+  &.wimp-whisper:not(.wimp-message) .console::before {
+    content: 'Whisper to...';
+  }
+  &.wimp-message .console::before {
+    content: 'Message to...';
+  }
+}
+
+.console--container {
+  border: 2px solid transparent;
+  transition:
+    border 0.5s ease-in-out,
+    background 0.5s ease-in-out;
+}

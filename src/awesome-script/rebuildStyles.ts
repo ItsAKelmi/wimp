@@ -2,6 +2,7 @@ import { stylesheet } from './style.module.css';
 import { default as cssDimCommon } from './css-tweaks/dim-common.css';
 import { default as cssDimInactive } from './css-tweaks/dim-inactive.css';
 import { default as cssDimWhileTyping } from './css-tweaks/dim-while-typing.css';
+import { default as cssPrivateHilight } from './css-tweaks/private-hilight.css';
 import { SETTINGS } from './common';
 export function rebuildStyles() {
   let style = document.querySelector('#wimp-styles');
@@ -46,6 +47,9 @@ export function rebuildStyles() {
       }
     }
   }
+
+  const hilightMessageType = GM_getValue(SETTINGS.HILIGHT_MESSAGE_TYPE, false);
+  if (hilightMessageType) stylesText += cssPrivateHilight;
 
   style.textContent = stylesText;
 }

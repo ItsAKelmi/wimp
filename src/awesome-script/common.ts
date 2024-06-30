@@ -6,6 +6,10 @@ export enum SETTINGS {
   DIM_TYPING = 'dimInactiveWhileTyping',
   FOCUS_MESSAGE_DOT = 'focusMessageDot',
   FOCUS_MESSAGE_UNDERLINE = 'focusMessageUnderline',
+  REQUIRE_PUNCTUATION_END = 'requirePunctuationEnd',
+  REQUIRE_PUNCTUATION_END_MSG = 'requirePunctuationEndMsg',
+  HILIGHT_MESSAGE_TYPE = 'hilightMessageType',
+  EXPECTED_VERSION_OVERRIDE = 'EXPECTED_VERSION_OVERRIDE',
 }
 
 // Maps JSX Elements to Modapp Elements
