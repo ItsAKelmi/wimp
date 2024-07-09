@@ -8,6 +8,7 @@ import { applyWhisperMessageReplacements } from './whisperMessageReplacements';
 import { rebuildStyles } from './rebuildStyles';
 import { hijackEnter, hookCommandStyle } from './antiMav';
 import { VersionMismatchToast } from './versionMismatch';
+import { registerNotepadTool } from './notepad/notepad';
 
 const expectedVersion = '1.58.1';
 let version = undefined;
@@ -43,6 +44,10 @@ GM_addValueChangeListener(SETTINGS.HILIGHT_MESSAGE_TYPE, (a, b, newValue) => {
   if (newValue) unsafeWindow.location.reload();
 });
 
+GM_addValueChangeListener(SETTINGS.NOTEPAD, () => {
+  applyMods();
+});
+
 let undoMods = [];
 function applyMods() {
   for (const f of undoMods) f();
@@ -74,6 +79,9 @@ function applyMods() {
   }
 
   undoMods.push(hookCommandStyle());
+
+  const useNotepad = GM_getValue(SETTINGS.NOTEPAD, false);
+  if (useNotepad) undoMods.push(registerNotepadTool());
 }
 
 function compareMinorVersion(a, b) {
@@ -146,29 +154,28 @@ function initializeWimp() {
   applyMods();
 }
 
+const requiredModules = [
+  'charLog',
+  'player',
+  'toaster',
+  'charFocus',
+  'mute',
+  'console',
+  'info',
+  'api',
+];
 const foo = setInterval(() => {
   // Checking that expected modules have finished initializing...
-  const maybeCharLog = unsafeWindow?.app?.getModule('charLog');
-  const maybePlayer = unsafeWindow?.app?.getModule('player');
-  const maybeToaster = unsafeWindow?.app?.getModule('toaster');
-  const maybeCharFocus = unsafeWindow?.app?.getModule('charFocus');
-  const maybeMute = unsafeWindow?.app?.getModule('mute');
-  const maybeConsole = unsafeWindow?.app?.getModule('console');
+  const required = requiredModules.map((k) => unsafeWindow?.app?.getModule(k));
+  if (required.some((v) => !v)) return;
+
   const maybeVersion = unsafeWindow?.app
     ?.getModule('info')
     ?.getClient()?.version;
-  if (
-    maybeCharLog &&
-    maybePlayer &&
-    maybeVersion &&
-    maybeToaster &&
-    maybeCharFocus &&
-    maybeMute &&
-    maybeConsole
-  ) {
-    // player = maybePlayer;
-    version = maybeVersion;
-    initializeWimp();
-    clearInterval(foo);
-  }
+
+  if (!maybeVersion) return;
+
+  version = maybeVersion;
+  initializeWimp();
+  clearInterval(foo);
 }, 100);

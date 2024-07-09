@@ -134,3 +134,43 @@
     margin-left: 1px;
   }
 }
+
+.notepad {
+  padding: 16px;
+
+  div:first-child {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    line-height: 28px;
+  }
+
+  textarea {
+    margin-bottom: 16px;
+    width: 100%;
+    background: #a8abb2;
+    color: #000;
+    border-radius: 4px;
+    resize: vertical;
+    height: calc(100vh-200px);
+  }
+
+  .placeholder {
+    color: rgb(105, 109, 119);
+  }
+}
+
+.notepadBtn {
+  background: transparent;
+  line-height: 28px;
+  width: 28px;
+  border: none;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #303753;
+  }
+}

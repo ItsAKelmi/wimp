@@ -3,9 +3,10 @@
 // @namespace   WolferyImproved
 // @description A collection of tweaks and patches to improve experience on Wolfery.
 // @match       https://wolfery.com/*
+// @match       https://test.mucklet.com/*
 // @downloadURL https://github.com/ItsAKelmi/wimp/releases/latest/download/wolfery-improved.user.js
 // @homepageURL https://github.com/ItsAKelmi/wimp/
-// @version     1.1.0
+// @version     1.2.0
 // @author      process.env.AUTHOR
 // @require     https://cdn.jsdelivr.net/npm/@violentmonkey/dom@2
 // @require     https://cdn.jsdelivr.net/npm/@violentmonkey/dom@2/dist/solid.min.js

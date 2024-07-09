@@ -76,6 +76,14 @@ export function Settings() {
           Focus colored underlining
         </SettingCheckbox>
       </fieldset>
+
+      <h3>Characters</h3>
+      <fieldset>
+        <legend></legend>
+        <SettingCheckbox settingKey={SETTINGS.NOTEPAD}>
+          Add notepad to character profiles
+        </SettingCheckbox>
+      </fieldset>
     </div>
   );
 }

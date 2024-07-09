@@ -10,12 +10,19 @@ export enum SETTINGS {
   REQUIRE_PUNCTUATION_END_MSG = 'requirePunctuationEndMsg',
   HILIGHT_MESSAGE_TYPE = 'hilightMessageType',
   EXPECTED_VERSION_OVERRIDE = 'EXPECTED_VERSION_OVERRIDE',
+  NOTEPAD = 'NOTEPAD',
 }
 
 // Maps JSX Elements to Modapp Elements
 export function j2m(renderer: () => JSX.Element) {
+  let _div: HTMLDivElement;
   return {
-    render: (div) => render(renderer, div),
-    unrender: () => void 0,
+    render: (div: HTMLDivElement) => {
+      _div = div;
+      render(renderer, div);
+    },
+    unrender: () => {
+      _div.replaceChildren();
+    },
   };
 }

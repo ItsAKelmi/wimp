@@ -34,6 +34,9 @@ interface WolferyApp {
   getModule(mod: 'charFocus'): CharFocus;
   getModule(mod: 'player'): {
     getActiveChar(): CharModel;
+    getPlayer(): {
+      id: string;
+    };
   };
   getModule(mod: 'console'): {
     addKeymap(
@@ -63,6 +66,36 @@ interface WolferyApp {
       ): void;
     };
   };
+  getModule(mod: 'pageChar'): {
+    addTool(tool: {
+      id: string;
+      sortOrder: number;
+      componentFactory: (ctrl, char) => ModappElement;
+      filter?: (ctrl, char) => bool;
+      className?: number | undefined;
+    }): this;
+    removeTool(toolId: string): this;
+  };
+
+  getModule(mod: 'charPages'): {
+    openPage(
+      ctrlId: string,
+      charId: string,
+      pageFactory: (
+        ctrl,
+        char,
+        state,
+        close,
+      ) => { title: string; component: ModappElement; onClose: () => void },
+      onClose?: () => void,
+    ): () => void;
+  };
+
+  getModule(mod: 'api'): {
+    get(id: string): Promise;
+    call(id: string, method: string, data: object): Promise;
+    // set(id: string, method: string, data: object): Promise;
+  };
 }
 
 interface ModappElement {
@@ -71,6 +104,7 @@ interface ModappElement {
 }
 
 interface CharModel {
+  surname: string;
   id: string;
   name: string;
 }
