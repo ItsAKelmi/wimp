@@ -5,7 +5,7 @@ import pkg from './package.json' assert { type: 'json' };
 
 export default defineConfig(
   Object.entries({
-    'awesome-script': 'src/awesome-script/index.ts',
+    'wolfery-improved': 'src/wolfery-improved/index.ts',
   }).map(([name, entry]) => ({
     input: entry,
     plugins: [
