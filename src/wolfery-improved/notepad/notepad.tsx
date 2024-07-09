@@ -56,9 +56,22 @@ function NotesPage({ char }: { ctrl: CharModel; char: CharModel }) {
         <button
           type="button"
           class="iconbtn small"
-          onClick={() => setEdit(!edit())}
+          onClick={() => {
+            if (
+              edit() &&
+              textRef() &&
+              value() !== textRef().value &&
+              !confirm('You have unsaved changes. Discard?')
+            )
+              return;
+            setEdit(!edit());
+          }}
         >
-          <i aria-hidden="true" class="fa fa-pencil"></i>
+          <i
+            aria-hidden="true"
+            class="fa"
+            classList={{ 'fa-pencil': !edit(), 'fa-close': edit() }}
+          ></i>
         </button>
       </div>
 
