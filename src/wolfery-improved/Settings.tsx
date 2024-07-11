@@ -84,6 +84,14 @@ export function Settings() {
           Add notepad to character profiles
         </SettingCheckbox>
       </fieldset>
+
+      <h3>UI Tweaks</h3>
+      <fieldset>
+        <legend>Changes the way the UI works</legend>
+        <SettingCheckbox settingKey={SETTINGS.UI_HIDE_NAV_OVERLAY}>
+          Hide redundant navigation overlay on the message log
+        </SettingCheckbox>
+      </fieldset>
     </div>
   );
 }

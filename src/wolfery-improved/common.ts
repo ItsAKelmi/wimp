@@ -11,6 +11,7 @@ export enum SETTINGS {
   HILIGHT_MESSAGE_TYPE = 'hilightMessageType',
   EXPECTED_VERSION_OVERRIDE = 'EXPECTED_VERSION_OVERRIDE',
   NOTEPAD = 'NOTEPAD',
+  UI_HIDE_NAV_OVERLAY = 'UI_HIDE_NAV_OVERLAY',
 }
 
 // Maps JSX Elements to Modapp Elements

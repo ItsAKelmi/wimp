@@ -131,6 +131,21 @@ export interface ConsoleState {
 }
 
 export interface CharLog {
+  getOverlays(): Map<
+    // Not really a map but w/e
+    string,
+    {
+      id: string;
+      sortOrder: number;
+      componentFactory: () => void;
+    }
+  >;
+  addOverlay(origNav: {
+    id: string;
+    sortOrder: number;
+    componentFactory: () => void;
+  }): unknown;
+  removeOverlay(arg0: string): unknown;
   getEventComponentFactory(type: string): unknown;
   addEventComponentFactory(
     type: string,

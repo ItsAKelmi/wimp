@@ -1,52 +1,33 @@
 import './meta.js?userscript-metadata';
 import { observe } from '@violentmonkey/dom';
 import { Settings, SettingsButton } from './Settings';
-import { SETTINGS } from './common';
+import { j2m, SETTINGS } from './common';
 import { fixMutes } from './fixMutes';
-import { j2m } from './common';
 import { applyWhisperMessageReplacements } from './whisperMessageReplacements';
 import { rebuildStyles } from './rebuildStyles';
 import { hijackEnter, hookCommandStyle } from './antiMav';
 import { VersionMismatchToast } from './versionMismatch';
 import { registerNotepadTool } from './notepad/notepad';
+import { hideNav } from './ui-tweaks/ui-tweaks';
 
 const expectedVersion = '1.58.1';
 let version = undefined;
 unsafeWindow.WIMPPatches = '';
 
-GM_addValueChangeListener(SETTINGS.DIM_INACTIVE, () => rebuildStyles());
-GM_addValueChangeListener(SETTINGS.DIM_TYPING, () => rebuildStyles());
-GM_addValueChangeListener(SETTINGS.FOCUS_MESSAGE_DOT, () => {
-  rebuildStyles();
-  applyMods();
-});
-GM_addValueChangeListener(SETTINGS.FOCUS_MESSAGE_UNDERLINE, () => {
-  rebuildStyles();
-  applyMods();
-});
-GM_addValueChangeListener(
+const requiresReload = [
   SETTINGS.REQUIRE_PUNCTUATION_END,
-  (a, b, newValue) => {
-    applyMods();
-    if (newValue) unsafeWindow.location.reload();
-  },
-);
-GM_addValueChangeListener(
   SETTINGS.REQUIRE_PUNCTUATION_END_MSG,
-  (a, b, newValue) => {
+  SETTINGS.HILIGHT_MESSAGE_TYPE,
+];
+for (const key of Object.keys(SETTINGS)) {
+  const val = SETTINGS[key];
+  GM_addValueChangeListener(val, (a, b, newValue) => {
+    rebuildStyles();
     applyMods();
-    if (newValue) unsafeWindow.location.reload();
-  },
-);
-GM_addValueChangeListener(SETTINGS.HILIGHT_MESSAGE_TYPE, (a, b, newValue) => {
-  rebuildStyles();
-  applyMods();
-  if (newValue) unsafeWindow.location.reload();
-});
-
-GM_addValueChangeListener(SETTINGS.NOTEPAD, () => {
-  applyMods();
-});
+    if (requiresReload.includes(val) && newValue)
+      unsafeWindow.location.reload();
+  });
+}
 
 let undoMods = [];
 function applyMods() {
@@ -82,6 +63,9 @@ function applyMods() {
 
   const useNotepad = GM_getValue(SETTINGS.NOTEPAD, false);
   if (useNotepad) undoMods.push(registerNotepadTool());
+
+  const uiHideNav = GM_getValue(SETTINGS.UI_HIDE_NAV_OVERLAY, false);
+  if (uiHideNav) undoMods.push(hideNav());
 }
 
 function compareMinorVersion(a, b) {
