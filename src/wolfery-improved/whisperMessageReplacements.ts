@@ -4,16 +4,21 @@ import { j2m } from './common';
 import { rebuildStyles } from './rebuildStyles';
 
 export function applyWhisperMessageReplacements(
-  charFocus: CharFocus,
+  charFocus: CharFocus & {
+    _updateStyle: { wimpPatched?: boolean } & (() => void);
+  },
   charLog: CharLog,
 ) {
-  // Hook focus updates to style updates
-  const oldUpdate = charFocus._updateStyle.bind(charFocus);
-  charFocus._updateStyle = () => {
-    rebuildStyles();
-    oldUpdate();
-  };
-  console.info('WIMP', '...hooked focus style updates');
+  if (!charFocus._updateStyle.wimpPatched) {
+    // Hook focus updates to style updates
+    const oldUpdate = charFocus._updateStyle.bind(charFocus);
+    charFocus._updateStyle = () => {
+      rebuildStyles();
+      oldUpdate();
+    };
+    charFocus._updateStyle.wimpPatched = true;
+    console.info('WIMP', '...hooked focus style updates');
+  }
 
   const origWhisperFactory = charLog.getEventComponentFactory('whisper');
   const origMessageFactory = charLog.getEventComponentFactory('message');

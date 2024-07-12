@@ -9,6 +9,7 @@ import { hijackEnter, hookCommandStyle } from './antiMav';
 import { VersionMismatchToast } from './versionMismatch';
 import { registerNotepadTool } from './notepad/notepad';
 import { hideNav } from './ui-tweaks/ui-tweaks';
+import { applyRequestEventReplacement } from './ui-tweaks/dmmt-requests';
 
 const expectedVersion = '1.58.1';
 let version = undefined;
@@ -66,6 +67,10 @@ function applyMods() {
 
   const uiHideNav = GM_getValue(SETTINGS.UI_HIDE_NAV_OVERLAY, false);
   if (uiHideNav) undoMods.push(hideNav());
+
+  const dmmtRequests = GM_getValue(SETTINGS.DMMT_REQUESTS, false);
+  if (dmmtRequests)
+    undoMods.push(applyRequestEventReplacement(charFocus, charLog));
 }
 
 function compareMinorVersion(a, b) {

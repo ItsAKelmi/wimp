@@ -91,6 +91,9 @@ export function Settings() {
         <SettingCheckbox settingKey={SETTINGS.UI_HIDE_NAV_OVERLAY}>
           Hide redundant navigation overlay on the message log
         </SettingCheckbox>
+        <SettingCheckbox settingKey={SETTINGS.DMMT_REQUESTS}>
+          Add buttons to follow/summon requests to accept
+        </SettingCheckbox>
       </fieldset>
     </div>
   );

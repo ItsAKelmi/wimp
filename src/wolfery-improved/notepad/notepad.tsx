@@ -8,6 +8,7 @@ export function registerNotepadTool() {
   const pageChar = unsafeWindow?.app?.getModule('pageChar');
   const charPages = unsafeWindow?.app?.getModule('charPages');
 
+  pageChar.removeTool('wimp-notepad');
   pageChar.addTool({
     id: 'wimp-notepad',
     sortOrder: 990,

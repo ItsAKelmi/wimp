@@ -107,6 +107,7 @@ interface CharModel {
   surname: string;
   id: string;
   name: string;
+  call(method: string, params: object): unknown;
 }
 
 export interface ConsoleState {

@@ -174,3 +174,18 @@
     background-color: #303753;
   }
 }
+
+.requestFieldset {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .acceptRequestBtn {
+    display: inline-block;
+    flex: 0.7;
+    max-width: 8em;
+
+    button {
+      width: 100%;
+    }
+  }
+}
