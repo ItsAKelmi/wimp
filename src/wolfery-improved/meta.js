@@ -6,7 +6,7 @@
 // @match       https://test.mucklet.com/*
 // @downloadURL https://github.com/ItsAKelmi/wimp/releases/latest/download/wolfery-improved.user.js
 // @homepageURL https://github.com/ItsAKelmi/wimp/
-// @version     1.2.0
+// @version     1.3.0
 // @author      process.env.AUTHOR
 // @require     https://cdn.jsdelivr.net/npm/@violentmonkey/dom@2
 // @require     https://cdn.jsdelivr.net/npm/@violentmonkey/dom@2/dist/solid.min.js
