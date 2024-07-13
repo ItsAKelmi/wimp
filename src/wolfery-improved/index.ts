@@ -115,7 +115,7 @@ function initializeWimp() {
   console.info('WIMP', 'Applying WIMP mods...');
   // Insert styles
   observe(document.body, () => {
-    const node = document.querySelector('.console-controlledchar');
+    const node = document.querySelector('.screen.viewport');
     if (node) {
       rebuildStyles();
       console.info('WIMP', '...applied WIMP style element.');

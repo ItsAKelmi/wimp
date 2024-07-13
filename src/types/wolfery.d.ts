@@ -131,16 +131,18 @@ export interface ConsoleState {
   ): void;
 }
 
+interface ModAppCollection<T> {
+  get(id: string): T;
+  get length(): number;
+  atIndex(idx: number): T;
+}
+
 export interface CharLog {
-  getOverlays(): Map<
-    // Not really a map but w/e
-    string,
-    {
-      id: string;
-      sortOrder: number;
-      componentFactory: () => void;
-    }
-  >;
+  getOverlays(): ModAppCollection<{
+    id: string;
+    sortOrder: number;
+    componentFactory: () => void;
+  }>;
   addOverlay(origNav: {
     id: string;
     sortOrder: number;
