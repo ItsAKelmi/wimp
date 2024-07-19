@@ -137,6 +137,7 @@
 
 .notepad {
   padding: 16px;
+  font-size: 15px;
 
   div:first-child {
     display: flex;
