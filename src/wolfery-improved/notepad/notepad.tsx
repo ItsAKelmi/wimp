@@ -49,7 +49,7 @@ function NotesPage({ char }: { ctrl: CharModel; char: CharModel }) {
       });
   }
   return (
-    <div class={styles.notepad}>
+    <div class={`${styles.notepad} common--formattext`}>
       <div>
         <h3>
           {char.name} {char.surname}
