@@ -102,6 +102,10 @@ export function Settings() {
           Mobile: Automatically grow the command console to fit more text as
           entered
         </SettingCheckbox>
+        <SettingCheckbox settingKey={SETTINGS.FORMAT_KEYS}>
+          Apply keybinds to format text in the command console (Ctrl-B/I/O
+          currently)
+        </SettingCheckbox>
       </fieldset>
 
       <h3>Integrations</h3>
@@ -111,7 +115,7 @@ export function Settings() {
           that these features will make requests to non-Wolfery sites.
         </legend>
         <SettingCheckbox settingKey={SETTINGS.DATAMUSE}>
-          Desktop: Datamuse Thesaurus and Dictionary integrations.
+          Desktop: Datamuse Thesaurus and Dictionary integrations
         </SettingCheckbox>
       </fieldset>
     </div>

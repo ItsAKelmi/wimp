@@ -11,6 +11,7 @@ import { registerNotepadTool } from './notepad/notepad';
 import { hideNav } from './ui-tweaks/ui-tweaks';
 import { applyRequestEventReplacement } from './ui-tweaks/dmmt-requests';
 import { applyDatamuse } from './integrations/datamuse';
+import { applyFormatKeybinds } from './ui-tweaks/format-keybinds';
 
 const expectedVersion = '1.58.1';
 let version = undefined;
@@ -75,6 +76,9 @@ function applyMods() {
 
   const useDatamuse = GM_getValue(SETTINGS.DATAMUSE, false);
   if (useDatamuse) undoMods.push(applyDatamuse());
+
+  const useFormatKeys = GM_getValue(SETTINGS.FORMAT_KEYS, false);
+  if (useFormatKeys) undoMods.push(applyFormatKeybinds());
 }
 
 function compareMinorVersion(a, b) {
