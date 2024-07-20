@@ -190,3 +190,53 @@
     }
   }
 }
+
+.wimp-dm-define {
+  position: absolute;
+  display: none;
+  z-index: 999;
+  background-color: transparent;
+
+  button {
+    margin-left: -27px;
+    position: relative;
+    height: 20px;
+    width: 54px;
+    line-height: 20px;
+    font-size: 12px;
+    background: rgb(74, 159, 195);
+    padding: 0 8px;
+    border-radius: 4px;
+    border: none;
+  }
+
+  button::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgb(74, 159, 195) transparent transparent transparent;
+  }
+
+  button:hover,
+  button:focus {
+    background: #3989ab;
+    color: #252a40;
+  }
+
+  button:hover::after,
+  button:focus::after {
+    border-color: #3989ab transparent transparent transparent;
+  }
+
+  button:focus {
+    box-shadow: 0 0 4px 1px #c1a657;
+  }
+
+  button:active {
+    box-shadow: 0 0 4px 1px hsl(45, 46%, 30%);
+  }
+}

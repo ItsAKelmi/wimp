@@ -95,6 +95,17 @@ export function Settings() {
           Add buttons to follow/summon requests to accept
         </SettingCheckbox>
       </fieldset>
+
+      <h3>Integrations</h3>
+      <fieldset>
+        <legend>
+          Integrations to external services to improve your experience. Note
+          that these features will make requests to non-Wolfery sites.
+        </legend>
+        <SettingCheckbox settingKey={SETTINGS.DATAMUSE}>
+          Datamuse: Thesaurus and Dictionary integrations.
+        </SettingCheckbox>
+      </fieldset>
     </div>
   );
 }

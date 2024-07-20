@@ -11,6 +11,8 @@ interface WolferyApp {
     getClient: () => { version: string };
   };
   getModule(mod: 'toaster'): {
+    close(id: string): unknown;
+    collection: ModAppCollection<{ id: string }>;
     open: (opt: {
       title?: string;
       content: string | ModappElement | ((close: () => void) => ModappElement);
@@ -39,6 +41,7 @@ interface WolferyApp {
     };
   };
   getModule(mod: 'console'): {
+    removeKeymap(key: string): unknown;
     addKeymap(
       key: string,
       binding: { run: (consoleState: ConsoleState) => boolean },
@@ -131,7 +134,7 @@ export interface ConsoleState {
   ): void;
 }
 
-interface ModAppCollection<T> {
+interface ModAppCollection<T extends { id: string }> {
   get(id: string): T;
   get length(): number;
   atIndex(idx: number): T;

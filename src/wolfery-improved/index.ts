@@ -10,6 +10,7 @@ import { VersionMismatchToast } from './versionMismatch';
 import { registerNotepadTool } from './notepad/notepad';
 import { hideNav } from './ui-tweaks/ui-tweaks';
 import { applyRequestEventReplacement } from './ui-tweaks/dmmt-requests';
+import { applyDatamuse } from './integrations/datamuse';
 
 const expectedVersion = '1.58.1';
 let version = undefined;
@@ -71,6 +72,9 @@ function applyMods() {
   const dmmtRequests = GM_getValue(SETTINGS.DMMT_REQUESTS, false);
   if (dmmtRequests)
     undoMods.push(applyRequestEventReplacement(charFocus, charLog));
+
+  const useDatamuse = GM_getValue(SETTINGS.DATAMUSE, false);
+  if (useDatamuse) undoMods.push(applyDatamuse());
 }
 
 function compareMinorVersion(a, b) {

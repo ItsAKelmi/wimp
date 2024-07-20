@@ -13,6 +13,7 @@ export enum SETTINGS {
   NOTEPAD = 'NOTEPAD',
   UI_HIDE_NAV_OVERLAY = 'UI_HIDE_NAV_OVERLAY',
   DMMT_REQUESTS = 'DMMT_REQUESTS',
+  DATAMUSE = 'DATAMUSE',
 }
 
 // Maps JSX Elements to Modapp Elements
