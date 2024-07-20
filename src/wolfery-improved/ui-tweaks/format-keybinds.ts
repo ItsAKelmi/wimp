@@ -3,9 +3,19 @@ function surroundSelectionWith(text: string | string[]) {
   const sel = document.getSelection();
   const range = sel.getRangeAt(0);
   const content = range.extractContents();
-  range.insertNode(
-    document.createTextNode(`${text[0]}${content.textContent}${text[1]}`),
-  );
+  const textContent = content.textContent;
+
+  if (textContent.startsWith(text[0]) && textContent.endsWith(text[1])) {
+    range.insertNode(
+      document.createTextNode(
+        `${textContent.slice(text[0].length, textContent.length - text[1].length)}`,
+      ),
+    );
+  } else {
+    range.insertNode(
+      document.createTextNode(`${text[0]}${textContent}${text[1]}`),
+    );
+  }
 }
 
 const keymaps = {
