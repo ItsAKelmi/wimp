@@ -94,6 +94,14 @@ export function Settings() {
         <SettingCheckbox settingKey={SETTINGS.DMMT_REQUESTS}>
           Add buttons to follow/summon requests to accept
         </SettingCheckbox>
+        <SettingCheckbox settingKey={SETTINGS.GROW_CONSOLE_DESKTOP}>
+          Desktop: Automatically grow the command console to fit more text as
+          entered
+        </SettingCheckbox>
+        <SettingCheckbox settingKey={SETTINGS.GROW_CONSOLE_MOBILE}>
+          Mobile: Automatically grow the command console to fit more text as
+          entered
+        </SettingCheckbox>
       </fieldset>
 
       <h3>Integrations</h3>

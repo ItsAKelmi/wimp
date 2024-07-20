@@ -3,6 +3,8 @@ import { default as cssDimCommon } from './css-tweaks/dim-common.css';
 import { default as cssDimInactive } from './css-tweaks/dim-inactive.css';
 import { default as cssDimWhileTyping } from './css-tweaks/dim-while-typing.css';
 import { default as cssPrivateHilight } from './css-tweaks/private-hilight.css';
+import { default as cssGrowConsoleDesktop } from './css-tweaks/grow-console-desktop.css';
+import { default as cssGrowConsoleMobile } from './css-tweaks/grow-console-mobile.css';
 import { SETTINGS } from './common';
 export function rebuildStyles() {
   let style = document.querySelector('#wimp-styles');
@@ -19,7 +21,9 @@ export function rebuildStyles() {
     focusMessageUnderline = GM_getValue(
       SETTINGS.FOCUS_MESSAGE_UNDERLINE,
       false,
-    );
+    ),
+    growConsoleDesktop = GM_getValue(SETTINGS.GROW_CONSOLE_DESKTOP, false),
+    growConsoleMobile = GM_getValue(SETTINGS.GROW_CONSOLE_MOBILE, false);
   let stylesText = stylesheet;
   if (dimInactiveControlled) {
     stylesText += cssDimInactive;
@@ -29,6 +33,12 @@ export function rebuildStyles() {
   }
   if (dimInactiveControlled || dimInactiveWhileTyping) {
     stylesText += cssDimCommon;
+  }
+  if (growConsoleDesktop) {
+    stylesText += cssGrowConsoleDesktop;
+  }
+  if (growConsoleMobile) {
+    stylesText += cssGrowConsoleMobile;
   }
 
   if (focusMessageDot || focusMessageUnderline) {

@@ -1,0 +1,5 @@
+.layoutdesktop .console--editor {
+  height: initial;
+  min-height: 100px;
+  max-height: 50vh;
+}

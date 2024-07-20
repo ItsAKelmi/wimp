@@ -1,0 +1,5 @@
+.layoutmobile
+  .console:focus-within
+  .console--editor:not(:has(.console-editor.empty)) {
+  height: calc(100vh - 128px);
+}
