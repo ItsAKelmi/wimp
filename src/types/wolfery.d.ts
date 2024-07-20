@@ -99,6 +99,10 @@ interface WolferyApp {
     call(id: string, method: string, data: object): Promise;
     // set(id: string, method: string, data: object): Promise;
   };
+
+  getModule(mod: 'layout'): {
+    currentLayout: string;
+  };
 }
 
 interface ModappElement {

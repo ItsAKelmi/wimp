@@ -229,6 +229,14 @@ function DatamuseBtn({
 }
 
 export function applyDatamuse() {
+  if (unsafeWindow.app?.getModule('layout').currentLayout !== 'desktop') {
+    console.info(
+      'WIMP',
+      '...skipping Datamuse init because not in desktop layout',
+    );
+    return () => void 0;
+  }
+
   const con = unsafeWindow.app?.getModule('console');
   con.addKeymap('alt-d', {
     run: () => {

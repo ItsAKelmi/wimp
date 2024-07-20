@@ -156,11 +156,14 @@ const requiredModules = [
   'console',
   'info',
   'api',
+  'layout',
 ];
 const foo = setInterval(() => {
   // Checking that expected modules have finished initializing...
   const required = requiredModules.map((k) => unsafeWindow?.app?.getModule(k));
   if (required.some((v) => !v)) return;
+
+  if (!unsafeWindow.app?.getModule('layout').currentLayout) return;
 
   const maybeVersion = unsafeWindow?.app
     ?.getModule('info')

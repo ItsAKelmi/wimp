@@ -89,7 +89,7 @@ export function Settings() {
       <fieldset>
         <legend>Changes the way the UI works</legend>
         <SettingCheckbox settingKey={SETTINGS.UI_HIDE_NAV_OVERLAY}>
-          Hide redundant navigation overlay on the message log
+          Desktop: Hide redundant navigation overlay on the message log
         </SettingCheckbox>
         <SettingCheckbox settingKey={SETTINGS.DMMT_REQUESTS}>
           Add buttons to follow/summon requests to accept
@@ -111,7 +111,7 @@ export function Settings() {
           that these features will make requests to non-Wolfery sites.
         </legend>
         <SettingCheckbox settingKey={SETTINGS.DATAMUSE}>
-          Datamuse: Thesaurus and Dictionary integrations.
+          Desktop: Datamuse Thesaurus and Dictionary integrations.
         </SettingCheckbox>
       </fieldset>
     </div>
