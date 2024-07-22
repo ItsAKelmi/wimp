@@ -144,22 +144,24 @@ function DatamuseBtn({
     if (pending) return;
     pending = true;
     unsafeWindow.requestAnimationFrame(() => {
-      const sel = document.getSelection();
+      const sel = unsafeWindow.document.getSelection();
+      const newSelectionText = sel.toString().trim();
 
       if (
         !currentScrollElement ||
-        sel.toString() !== currentSelectionText ||
+        newSelectionText !== currentSelectionText ||
         sel.anchorNode !== currentNode ||
         sel.anchorOffset !== currentOffset
       ) {
-        currentSelectionText = sel.toString();
+        currentSelectionText = newSelectionText;
         currentNode = sel.anchorNode;
         currentOffset = sel.anchorOffset;
 
         if (
           sel.type !== 'Range' ||
+          !newSelectionText ||
           !isChildOf(sel.anchorNode, triggerWithin) ||
-          (!allowSpaces && sel.toString().trim().includes(' '))
+          (!allowSpaces && newSelectionText.includes(' '))
         ) {
           if (currentScrollElement) {
             currentScrollElement.removeEventListener(
@@ -179,7 +181,11 @@ function DatamuseBtn({
           );
 
         // Weird UI state
-        if (!newScrollElement) return;
+        if (!newScrollElement) {
+          el.style.display = 'none';
+          pending = false;
+          return;
+        }
 
         if (currentScrollElement !== newScrollElement) {
           currentScrollElement?.removeEventListener(
@@ -192,10 +198,12 @@ function DatamuseBtn({
         }
       }
 
-      const selBox = sel.getRangeAt(0).getClientRects()[0];
+      const selBox = sel.getRangeAt(0)?.getClientRects()?.[0];
       if (!scrollBounds)
-        scrollBounds = currentScrollElement.getBoundingClientRect();
+        scrollBounds = currentScrollElement?.getBoundingClientRect();
       if (
+        selBox &&
+        scrollBounds &&
         // Only vertical scrolling on Wolfery for now
         scrollBounds.top <= selBox.top &&
         scrollBounds.bottom >= selBox.bottom
