@@ -42,6 +42,8 @@ and your userscript platform of choice should ask you to install it.
 
 ## [Download the latest version](https://github.com/ItsAKelmi/wimp/releases/latest/download/wolfery-improved.user.js)
 
+After installing the userscript and reloading the page, you should get a toast message that the mod is active, and you should see a new icon on your menu bar to the top left. The options are hopefully self-explanatory!
+
 ### But wait, what about updates?
 I’ve got you covered. If the game updates, the mod will let you know that it’s not been tested
 with that version. It’s most likely that everything will keep working fine, but just in case, it gives
